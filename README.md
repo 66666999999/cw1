@@ -97,7 +97,7 @@ This project is a video player application developed using the Qt framework. It 
 - Install **Qt 5.15.2(MinGW 32-bit only(Because some 32-bit supported functions were used when building the video player))**  
 - LAV Filters:
 Some video formats may require the installation of LAV Filters for proper playback.
-Download here: LAV Filters
+Download here: [LAV Filters](https://www.videohelp.com/software/LAV-Filters)
 If the decoder is already installed on your system, you can skip this step.  
 
 #### **Build and Run Steps**
