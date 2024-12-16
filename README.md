@@ -1,19 +1,19 @@
-### **README**
+# **README**
 
 ---
 
-#### **Project Name**
+### **Project Name**
 Qt Video Player Prototype Application
 
 ---
 
-#### **Project Overview**
+### **Project Overview**
 This project is a video player application developed using the Qt framework. It has undergone three iterations of development and optimization, focusing on core functionality, user interface (UI) improvements, and enhanced user experience (UX). The final version ensures key features, improved interactivity, and compatibility across both mobile and desktop platforms.
 
 ---
 
 ### **Development Environment**
-- **Qt Version**: Qt 5.15.2 (MinGW 64-bit and 32-bit)
+- **Qt Version**: Qt 5.15.2 (MinGW 32-bit only! (Because some 32-bit supported functions were used when building the video player))
 - **Platform**: Windows / Mobile Devices
 - **Language**: C++ / Qt Framework
 
@@ -22,6 +22,7 @@ This project is a video player application developed using the Qt framework. It 
 ### **Iteration Details**
 
 #### **First Iteration**
+![First iteration](https://github.com/Leo-Chen-cs/UI-finalcw/blob/main/image/First%20interation.png)
 **Implemented Features**:
 - Play/Pause button  
 - Mute functionality  
@@ -34,6 +35,7 @@ This project is a video player application developed using the Qt framework. It 
 ---
 
 #### **Second Iteration**
+![Second iteration](https://github.com/Leo-Chen-cs/UI-finalcw/blob/main/image/Second%20interation.png)
 **New Features**:
 - Slow rewind/fast forward functionality  
 - Add video functionality  
@@ -48,6 +50,7 @@ This project is a video player application developed using the Qt framework. It 
 ---
 
 #### **Third Iteration**
+![Third iteration](https://github.com/Leo-Chen-cs/UI-finalcw/blob/main/image/Third%20interation.png)
 **Optimizations and Enhancements**:
 - **UI Redesign**: Improved layout and enhanced interactive design.  
 - **Loop playback feature**  
@@ -91,8 +94,11 @@ This project is a video player application developed using the Qt framework. It 
 ### **How to Run**
 
 #### **Dependencies**
-- Install **Qt 5.15.2**  
-- Ensure a **video decoder** is installed; otherwise, playback errors may occur (Qt Multimedia plugin recommended).  
+- Install **Qt 5.15.2(MinGW 32-bit only(Because some 32-bit supported functions were used when building the video player))**  
+- LAV Filters:
+Some video formats may require the installation of LAV Filters for proper playback.
+Download here: LAV Filters
+If the decoder is already installed on your system, you can skip this step.  
 
 #### **Build and Run Steps**
 1. Clone the project to your local machine:  
@@ -102,7 +108,7 @@ This project is a video player application developed using the Qt framework. It 
    ```
 2. Open the project using Qt Creator:  
    - Select the `.pro` file in the `src` directory.  
-   - Configure the Qt 5.15.2 build environment (MinGW 32-bit/64-bit).  
+   - Configure the Qt 5.15.2 build environment (MinGW 32-bit only!(Because some 32-bit supported functions were used when building the video player)).  
 
 3. Run the program:  
    - Click the **Run** button in Qt Creator.  
@@ -139,7 +145,7 @@ This project is licensed under the MIT License.
 
 ---
 
-### **Contact**
+### **Contact**:blush:
 For questions, please contact:  
 - Email: cht@my.swjtu.edu.cn
 - GitHub Repository: [GitHub Repo](https://github.com/Leo-Chen-cs)  
