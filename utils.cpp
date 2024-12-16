@@ -187,20 +187,23 @@ QString getVideoInfo(QString fn){
     {
         QString keyString = tag->key;
         QString valueString = QString::fromUtf8(tag->value);
-        info_return+=" "+keyString+": "+valueString+"\n";
+        // info_return+=" "+keyString+": "+valueString+"\n";
         qDebug()<<info_return;
     }
     long duration=(formatContext->duration)/ AV_TIME_BASE;
     qDebug()<<formatContext;
-    info_return+=" 格式: "+QString(formatContext->iformat->name)+"\n";
-    info_return+=" 时长（s）: "+QString::number(duration)+"\n";
-    info_return+=" 码率: "+QString::number(formatContext->bit_rate)+"\n";
-    info_return+=" 流数: "+QString::number(formatContext->nb_streams)+"\n";
-//    info_return+=" 开始时间（ms）:"+QString::number(formatContext->start_time_realtime)+"\n";
-    info_return+=" fps探测尺寸: "+QString::number(formatContext->fps_probe_size)+"\n";
-    info_return+=" 错误检测系数: "+QString::number(formatContext->error_recognition)+"\n";
-    info_return+=" 格式探索分数: "+QString::number(formatContext->probe_score)+"\n";
+    // info_return+=" 格式: "+QString(formatContext->iformat->name)+"\n";
+    // info_return+=" 时长（s）: "+QString::number(duration)+"\n";
+    // info_return+=" 码率: "+QString::number(formatContext->bit_rate)+"\n";
+    // info_return+=" 流数: "+QString::number(formatContext->nb_streams)+"\n";
+    // info_return+=" fps探测尺寸: "+QString::number(formatContext->fps_probe_size)+"\n";
+    // info_return+=" 错误检测系数: "+QString::number(formatContext->error_recognition)+"\n";
+    // info_return+=" 格式探索分数: "+QString::number(formatContext->probe_score)+"\n";
     AVCodecParameters* pLocalCodecParameters_temp = NULL;
+    int video_width  ;
+    int video_height  ;
+    int video_pixel_format ;
+    int channel;
     for (int i = 0; i < (int)formatContext->nb_streams; i++)
     {
         pLocalCodecParameters_temp = formatContext->streams[i]->codecpar;
@@ -213,25 +216,34 @@ QString getVideoInfo(QString fn){
         }
         if (pLocalCodecParameters_temp->codec_type == AVMEDIA_TYPE_AUDIO)
         {
-            int channel=pLocalCodecParameters_temp->channels;//音道数
+            channel=pLocalCodecParameters_temp->channels;//音道数
             int sample_rate=pLocalCodecParameters_temp->sample_rate;//音频采样率
-            info_return+=" 音频编码器: "+QString(localCodec->long_name)+"\n";
-            info_return+=" 音道数: "+QString::number(channel)+"\n";
-            info_return+=" 音频采样率: "+QString::number(sample_rate)+"\n";
-            info_return+=" 音频码率: "+QString::number(pLocalCodecParameters_temp->bit_rate)+"\n";
+            // info_return+=" 音频编码器: "+QString(localCodec->long_name)+"\n";
+            // info_return+=" 音道数: "+QString::number(channel)+"\n";
+            // info_return+=" 音频采样率: "+QString::number(sample_rate)+"\n";
+            // info_return+=" 音频码率: "+QString::number(pLocalCodecParameters_temp->bit_rate)+"\n";
         }
         else if (pLocalCodecParameters_temp->codec_type == AVMEDIA_TYPE_VIDEO)
         {
             //得到视频帧的宽高
-            int video_width = formatContext->streams[i]->codecpar->width;
-            int video_height = formatContext->streams[i]->codecpar->height;
-            int video_pixel_format=formatContext->streams[i]->codecpar->format;
-            info_return+=" 视频编码器: "+QString(localCodec->long_name)+"\n";
-            info_return+=" 视频宽度: "+QString::number(video_width)+"\n";
-            info_return+=" 视频高度: "+QString::number(video_height)+"\n";
-            info_return+=" 像素格式: "+QString::number(video_pixel_format)+"\n";
+             video_width = formatContext->streams[i]->codecpar->width;
+             video_height = formatContext->streams[i]->codecpar->height;
+             video_pixel_format=formatContext->streams[i]->codecpar->format;
+            // info_return+=" 视频编码器: "+QString(localCodec->long_name)+"\n";
+            // info_return+=" 视频宽度: "+QString::number(video_width)+"\n";
+            // info_return+=" 视频高度: "+QString::number(video_height)+"\n";
+            // info_return+=" 像素格式: "+QString::number(video_pixel_format)+"\n";
         }
     }
+    QString res = QString("%1 x %3").arg(video_width).arg(video_height);
+    info_return+=" 标题:   "+ fn +"\n\n";
+    info_return+=" 分辨率: "+ res +"\n\n";
+    info_return+=" 帧速率: 30\n\n";
+    info_return+=" 音频频道: "+ QString::number(channel) +"\n\n";
+    info_return+=" 项目类型:  .mp4 \n\n";
+    info_return+=" 文件位置:"+ fn +"\n\n";
+
+
     pLocalCodecParameters_temp = NULL;
     avformat_free_context(formatContext);
     delete tag;

@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     setMouseTracking(true);
     this->setWindowFlags(Qt::FramelessWindowHint);
 
-
     initSystem();
     ui->normal_widget->setStyleSheet("background-color:black;");
     mediaPlayer = new QMediaPlayer;
@@ -118,11 +117,18 @@ void MainWindow::connect2Player(){
         if(playListVisable){
             ui->sideBlock->setVisible(false);
             this->resize(this->width()-ui->sideBlock->width(),this->height());
-
+            ui->openFileList->setStyleSheet(
+                        "image: url(:new/image/off1.png);"
+                        "border-radius:0px; "
+            );
         }
         else{
             ui->sideBlock->setVisible(true);
             this->resize(this->width()+ui->sideBlock->width(),this->height());
+            ui->openFileList->setStyleSheet(
+                        "image: url(:new/image/on1.png);"
+                        "border-radius:0px; "
+            );
         }
     });
 
@@ -222,12 +228,16 @@ void MainWindow::initVideoInfo(QString fileName){
     currentVideoPath = fileName;
     durationMs = (qint64)(currVideoSeekFrame->formatContext->duration/1000);
     durationS = (qint64)(currVideoSeekFrame->formatContext->duration/1000000);
+    qDebug() << "####Total Duration:" << duration  <<",durationS:"<<durationS<<",durationMs:"<<durationMs; // Duration is in milliseconds
 }
 
 void MainWindow::onDurationChanged(qint64 duration) {
-    qDebug() << "####Total Duration:" << duration  << "milliseconds"; // Duration is in milliseconds
+    // qDebug() << "####Total Duration:" << duration  << "milliseconds"; // Duration is in milliseconds
     // durationMs = (qint64)(duration);
     // durationS = (qint64)(duration/1000);
+
+    // ui->video_slider->setMaximum((int)durationMs);
+    // qDebug() << "####Total Duration:" << duration  <<",durationS:"<<durationS<<",durationMs:"<<durationMs; // Duration is in milliseconds
 }
 
 
@@ -268,7 +278,9 @@ void MainWindow::addVideoItem(QString fileName){
     horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
     QLabel *label = new QLabel(widget_3);
     label->setText(shortFilename);
-
+    label->setStyleSheet("color: rgb(246,246,246);"
+                         "font-family:'Microsoft YaHei';"
+                         "font:10pt;");
 
     label->setObjectName(QString::fromUtf8("label"));
 
@@ -277,7 +289,22 @@ void MainWindow::addVideoItem(QString fileName){
     pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
     pushButton_3->setMinimumSize(QSize(30, 30));
     pushButton_3->setMaximumSize(QSize(30, 30));
-
+    pushButton_3->setStyleSheet(QString::fromUtf8("QPushButton{ \n"
+            "image: url(:new/image/info_1.png);\n"
+            "border-radius:0px; \n"
+            "padding:0px;\n"
+            "}  \n"
+            "QPushButton:hover{ \n"
+            "image: url(:new/image/info_2.png);\n"
+            "border-radius:0px; \n"
+            "padding:0px;\n"
+            "} \n"
+            "\n"
+            "QPushButton:checked{ \n"
+            "image: url(:new/image/info_1.png);\n"
+            "} \n"
+            "\n"
+            ""));
 
     horizontalLayout_4->addWidget(pushButton_3);
 
@@ -291,7 +318,22 @@ void MainWindow::addVideoItem(QString fileName){
     pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
     pushButton_2->setMinimumSize(QSize(30, 30));
     pushButton_2->setMaximumSize(QSize(30, 30));
-
+    pushButton_2->setStyleSheet(QString::fromUtf8("QPushButton{ \n"
+        "image: url(:new/image/delete.png);\n"
+        "border-radius:0px; \n"
+        "padding:0px;\n"
+        "}  \n"
+        "QPushButton:hover{ \n"
+        "image: url(:new/image/delete_hover.png);\n"
+        "border-radius:0px; \n"
+        "padding:0px;\n"
+        "} \n"
+        "\n"
+        "QPushButton:checked{ \n"
+        "image: url(:new/image/delete.png);\n"
+        "} \n"
+        "\n"
+        ""));
 
     horizontalLayout_4->addWidget(pushButton_2);
 
@@ -306,6 +348,11 @@ void MainWindow::addVideoItem(QString fileName){
         for (int i = 0;i<playListLocal->size();i++) {
             if((*playListLocal)[i]==Qitem->data(Qt::UserRole).toString()){
                 removeIndex = i;
+                qDebug()<<Qitem->data(Qt::UserRole).toString()<<currentVideoPath;
+                if((Qitem->data(Qt::UserRole).toString()==currentVideoPath)&&m_playerState == QMediaPlayer::PlayingState){
+                    mediaPlayer->stop();
+
+                }
             }
         }
         if(removeIndex!=-1){
@@ -320,6 +367,24 @@ void MainWindow::addVideoItem(QString fileName){
     // 连接信息键和信息弹窗
     connect(pushButton_3,&QPushButton::clicked,[=](){
         QMessageBox msgBox;
+        msgBox.setStyleSheet(
+                    "QMessageBox"
+        "{"
+           " border:none;"
+            "background-color: rgb(57,60,62);"
+            "border-radius: 15px;"
+            "    color: white;"  // 设置白色字体
+        "}"
+                  "  QPushButton{ "
+                "    image: url(:new/image/ok.png);"
+               "     border-radius:0px; "
+              "      padding:1px;"
+              "      }  "
+            "QLabel {"
+            "    color: white;"  // 设置 QLabel 中的文本颜色
+            "}"
+        );
+
 
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.button(QMessageBox::Ok)->setText("");
@@ -327,7 +392,13 @@ void MainWindow::addVideoItem(QString fileName){
         msgBox.setIcon(QMessageBox::NoIcon);
         QIcon * windowIcon = new QIcon(":new/image/info.png");
         msgBox.setWindowIcon(*windowIcon);
-        msgBox.setWindowTitle("视媒体信息");
+        msgBox.setWindowTitle("属性");
+
+        // 设置窗口标题，通常这里可以为空来去掉标题栏
+        msgBox.setWindowTitle("");
+        // 去掉标题栏
+        msgBox.setWindowFlag(Qt::FramelessWindowHint);
+
         msgBox.setText(info);
         msgBox.exec();
     });
@@ -390,7 +461,13 @@ void MainWindow::initializeVideo(QString fileName){
     /*用于初始化视频, 无论是正放还是倒放都要用到*/
     currMediaType = mediaType(fileName);
 
-
+    // 若是音频文件, 则显示封面
+    if(currMediaType==1){
+//        QImage cover = getAttachedPic(fileName);
+        QImage *notFoundImage = new QImage(":new/image/song.png");
+        ui->reverse_widget->slotSetOneFrame(*notFoundImage);
+       // ui->reverse_widget->slotSetOneFrame(cover);
+    }
     // 初始化SeekFrame
     deleteSeekFrame();
     initSeekFrame(fileName);
@@ -418,11 +495,11 @@ void MainWindow::highlightInFileList(){
 
 void MainWindow::showNormalWidget(){
     ui->normal_widget->setVisible(true);
-
+    ui->reverse_widget->setVisible(false);
 }
 void MainWindow::showReverseWidget(){
     ui->normal_widget->setVisible(true);
-
+    ui->reverse_widget->setVisible(false);
 }
 void MainWindow::normalPlay(){
     mediaPlayer->setMedia(QMediaContent(QUrl::fromLocalFile(currentVideoPath)));
@@ -430,9 +507,20 @@ void MainWindow::normalPlay(){
     highlightInFileList();
     playHistory->append(currentVideoPath);
 
+    // 若是音频文件, 则显示封面
+    if(currMediaType==1){
+        showReverseWidget();
+        QImage cover = getAttachedPic(currentVideoPath);
+        ui->reverse_widget->slotSetOneFrame(cover);
+        QImage *notFoundImage = new QImage(":new/image/song.png");
 
+        ui->reverse_widget->slotSetOneFrame(*notFoundImage);
+
+    }
+    else{
+        // 视频则播放
         showNormalWidget();
-
+    }
 
     play();
 
@@ -464,24 +552,7 @@ void MainWindow::initSystem(){
 
 }
 
-void MainWindow::contextMenuEvent(QContextMenuEvent *e)
-{
-    if(loadedVideo){
-        QMenu *menu = new QMenu();
-        menu->setFixedWidth(160);
-        menu->addAction(rtText);
-        menu->addSeparator();
-        menu->addAction(rt0_5);
-        menu->addAction(rt0_75);
-        menu->addAction(rt1_0);
-        menu->addAction(rt1_25);
-        menu->addAction(rt1_5);
-        menu->addAction(rt2_0);
-        menu->addAction(rt3_0);
-        menu->exec(e->globalPos());
-        delete menu;
-    }
-}
+
 
 void MainWindow::changePlayingRatio(float rt){
     qDebug()<<"改变速率"<<rt;
@@ -501,22 +572,12 @@ void MainWindow::initWdigets(){
     ui->pause_botton->setVisible(false); // 暂停按钮初始为不可见
     ui->sideBlock->setVisible(false); // 播放列表初始化为不可见
 
-    rtText = new QAction("调整倍速",ui->normal_widget); // parent=this is the same with that parent=ui->widget? why?
-    rt0_5 = new QAction("x0.5",ui->normal_widget);
-    rt0_75 = new QAction("x0.75",ui->normal_widget);
-    rt1_0 = new QAction("x1.0",ui->normal_widget);
-    rt1_25 = new QAction("x1.25",ui->normal_widget);
-    rt1_5 = new QAction("x1.5",ui->normal_widget);
-    rt2_0 = new QAction("x2.0",ui->normal_widget);
-    rt3_0 = new QAction("x3.0",ui->normal_widget);
 
-    connect(rt0_5,&QAction::triggered,[=](){changePlayingRatio(0.5);});
-    connect(rt0_75,&QAction::triggered,[=](){changePlayingRatio(0.75);});
-    connect(rt1_0,&QAction::triggered,[=](){changePlayingRatio(1.0);});
-    connect(rt1_25,&QAction::triggered,[=](){changePlayingRatio(1.25);});
-    connect(rt1_5,&QAction::triggered,[=](){changePlayingRatio(1.5);});
-    connect(rt2_0,&QAction::triggered,[=](){changePlayingRatio(2.0);});
-    connect(rt3_0,&QAction::triggered,[=](){changePlayingRatio(3.0);});
+
+    pf_playback_rate = 1;    // 每次加刻度
+
+    // 更新速度
+    ui->speedBtn->setText(QString("倍速:%1").arg(pf_playback_rate));
 }
 
 void MainWindow::skipForwardOrBackward(bool mode)
@@ -562,6 +623,7 @@ void MainWindow::play(){
     ui->pause_botton->setVisible(true);
     qDebug()<<"开始播放";
     mediaPlayer->play();
+    // ui->label->setText(QString("当前播放:%1").arg());
 }
 
 void MainWindow::changeVideo(bool nextOrPrevious){
@@ -641,6 +703,175 @@ void MainWindow::changeVideo(bool nextOrPrevious){
         normalPlay();
     }
 }
+
+
+
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        this->m_drag = true;
+        this->dragPos = event->pos();
+        this->resizeDownPos = event->globalPos();
+        this->mouseDownRect = this->rect();
+
+        qDebug()<<"state:"<<m_playerState;
+        if(m_playerState == QMediaPlayer::PlayingState){
+            pause();
+
+        }
+        else if(m_playerState == QMediaPlayer::StoppedState){
+            play();
+
+        }
+    }
+}
+void MainWindow::mouseMoveEvent(QMouseEvent * event)
+{
+    if (resizeRegion != Default)
+    {
+        handleResize();
+        return;
+    }
+    if(m_move) {
+        move(event->globalPos() - dragPos);
+        return;
+    }
+    QPoint clientCursorPos = event->pos();
+    QRect r = this->rect();
+    QRect resizeInnerRect(resizeBorderWidth, resizeBorderWidth, r.width() - 2*resizeBorderWidth, r.height() - 2*resizeBorderWidth);
+    if(r.contains(clientCursorPos) && !resizeInnerRect.contains(clientCursorPos)) { //调整窗体大小
+        ResizeRegion resizeReg = getResizeRegion(clientCursorPos);
+        setResizeCursor(resizeReg);
+        if (m_drag && (event->buttons() & Qt::LeftButton)) {
+            resizeRegion = resizeReg;
+            handleResize();
+        }
+    }
+    else {
+
+
+        //移动窗体
+        setCursor(Qt::ArrowCursor);
+        if (m_drag && (event->buttons() & Qt::LeftButton)) {
+            m_move = true;
+            move(event->globalPos() - dragPos);
+        }
+
+    }
+}
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    m_drag = false;
+    if(m_move) {
+        m_move = false;
+//        handleMove(event->globalPos()); //鼠标放开后若超出屏幕区域自动吸附于屏幕顶部/左侧/右侧
+    }
+    resizeRegion = Default;
+    setCursor(Qt::ArrowCursor);
+}
+void MainWindow::setResizeCursor(ResizeRegion region)
+{
+    switch (region)
+    {
+    case North:
+    case South:
+        setCursor(Qt::SizeVerCursor);
+        break;
+    case East:
+    case West:
+        setCursor(Qt::SizeHorCursor);
+        break;
+    case NorthWest:
+    case SouthEast:
+        setCursor(Qt::SizeFDiagCursor);
+        break;
+    default:
+        setCursor(Qt::SizeBDiagCursor);
+        break;
+    }
+}
+ResizeRegion MainWindow::getResizeRegion(QPoint clientPos)
+{
+    if (clientPos.y() <= resizeBorderWidth) {
+        if (clientPos.x() <= resizeBorderWidth)
+            return NorthWest;
+        else if (clientPos.x() >= this->width() - resizeBorderWidth)
+            return NorthEast;
+        else
+            return North;
+    }
+    else if (clientPos.y() >= this->height() - resizeBorderWidth) {
+        if (clientPos.x() <= resizeBorderWidth)
+            return SouthWest;
+        else if (clientPos.x() >= this->width() - resizeBorderWidth)
+            return SouthEast;
+        else
+            return South;
+    }
+    else {
+        if (clientPos.x() <= resizeBorderWidth)
+            return West;
+        else
+            return East;
+    }
+}
+
+void MainWindow::handleResize()
+{
+    int xdiff = QCursor::pos().x() - resizeDownPos.x();
+    int ydiff = QCursor::pos().y() - resizeDownPos.y();
+    qDebug()<<"xdiff"<<xdiff;
+    qDebug()<<"ydiff"<<ydiff;
+    switch (resizeRegion)
+    {
+    case East:
+    {
+        resize(mouseDownRect.width()+xdiff, this->height());
+        break;
+    }
+    case West:
+    {
+        resize(mouseDownRect.width()-xdiff, this->height());
+        move(resizeDownPos.x()+xdiff, this->y());
+        break;
+    }
+    case South:
+    {
+        resize(this->width(),mouseDownRect.height()+ydiff);
+        break;
+    }
+    case North:
+    {
+        resize(this->width(),mouseDownRect.height()-ydiff);
+        move(this->x(), resizeDownPos.y()+ydiff);
+        break;
+    }
+    case SouthEast:
+    {
+        resize(mouseDownRect.width() + xdiff, mouseDownRect.height() + ydiff);
+        break;
+    }
+    case NorthEast:
+    {
+        resize(mouseDownRect.width()+xdiff, mouseDownRect.height()-ydiff);
+        move(this->x(), resizeDownPos.y()+ydiff);
+        break;
+    }
+    case NorthWest:
+    {
+        resize(mouseDownRect.width()-xdiff, mouseDownRect.height()-ydiff);
+        move(resizeDownPos.x()+xdiff, resizeDownPos.y()+ydiff);
+        break;
+    }
+    case SouthWest:
+    {
+        resize(mouseDownRect.width()-xdiff, mouseDownRect.height()+ydiff);
+        move(resizeDownPos.x()+xdiff, this->y());
+        break;
+    }
+    }
+}
 void MainWindow::reverseShowRatio(qint64 pts){
     /*用于更新进度条*/
     ui->video_slider->setValue(int(pts));
@@ -660,9 +891,34 @@ void MainWindow::deleteSeekFrame(){
 }
 void MainWindow::changePlayOrder(){
     if(isRepeat){
+        ui->repeat->setStyleSheet(
+                   " QPushButton{ "
+                   " image: url(:new/image/inorder.png);"
+                   " border-radius:0px; "
+                   " } "
+                    );
         isRepeat=false;
     }
     else{
+        ui->repeat->setStyleSheet(
+                   " QPushButton{ "
+                   " image: url(:new/image/repeat.png);"
+                   " border-radius:0px; "
+                   " } "
+                    );
         isRepeat = true;
     }
+}
+void MainWindow::on_speedBtn_clicked()
+{
+    // 设置变速
+    pf_playback_rate += PLAYBACK_RATE_SCALE;    // 每次加刻度
+    if(pf_playback_rate > PLAYBACK_RATE_MAX)
+    {
+        pf_playback_rate = PLAYBACK_RATE_MIN;
+    }
+    pf_playback_rate_changed = 1;
+    // 更新速度
+    ui->speedBtn->setText(QString("倍速:%1").arg(pf_playback_rate));
+    changePlayingRatio(pf_playback_rate);
 }

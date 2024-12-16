@@ -14,11 +14,17 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QMainWindow#MainWindow
+{
+	background-color: rgba(60, 65, 68,160);
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">QWidget
+{
+	border-radius: 15px;
+}</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0" colspan="2">
@@ -70,59 +76,40 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="close">
+          <widget class="QPushButton" name="pushButton">
            <property name="minimumSize">
             <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>30</width>
-             <height>20</height>
+             <width>25</width>
+             <height>22</height>
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true"/>
+            <string notr="true">QPushButton{ 
+image: url(:new/image/player.png);
+border-radius:0px; 
+} 
+</string>
            </property>
            <property name="text">
-            <string>关闭</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="minimize">
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-           <property name="text">
-            <string>最小化</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="maximize">
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="statusTip">
             <string/>
            </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
            <property name="styleSheet">
-            <string notr="true"/>
+            <string notr="true">QLabel{
+	border-radius:0px;
+	color: #F0F0F0;
+	background-color:rgba(0,0,0,0);
+	border-style:none;
+font-family:&quot;微软雅黑&quot;;
+font-size:16px;
+}
+</string>
            </property>
            <property name="text">
-            <string>最大化</string>
+            <string>视频播放器</string>
            </property>
           </widget>
          </item>
@@ -134,6 +121,132 @@
            <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="minimize">
+           <property name="minimumSize">
+            <size>
+             <width>21</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>19</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{ 
+image: url(:new/image/min.svg);
+border-radius:0px; 
+}  </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>6</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="maximize">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>19</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="statusTip">
+            <string/>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{ 
+image: url(:new/image/max.svg);
+border-radius:0px; 
+}  </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>6</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="close">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>19</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{ 
+image: url(:new/image/close.svg);
+border-radius:0px; 
+}  </string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>6</width>
              <height>20</height>
             </size>
            </property>
@@ -151,6 +264,9 @@
       </property>
       <item>
        <widget class="VideoWidget" name="normal_widget" native="true"/>
+      </item>
+      <item>
+       <widget class="VideoFrameDisplay" name="reverse_widget" native="true"/>
       </item>
      </layout>
     </item>
@@ -175,7 +291,12 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QWidget#widget_controller_2
+
+{
+	background-color: rgba(60, 65, 68,160);
+	border-radius: 15px;
+}</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_10">
        <property name="leftMargin">
@@ -198,7 +319,44 @@
             <bool>true</bool>
            </property>
            <property name="styleSheet">
-            <string notr="true"/>
+            <string notr="true">QListWidget
+{
+	border:none;
+	background-color: rgb(57,60,62);
+	border-radius: 15px;
+}
+
+QListView::item{
+
+font-size:30px;
+color: rgba(0, 120, 215, 100); 
+font-family: &quot;微软雅黑&quot;;
+
+
+}
+
+QListView::item:hover {
+background-color: rgba(0, 120, 215, 100);
+}
+
+QListView::item:selected {
+/*background-color: #4B5CC4;*/
+background-color: rgba(0, 120, 215, 100);
+}
+
+
+/*
+QListView::item:selected:!active {
+border-radius:5px; 
+border:1px solid rgb(210, 225, 230);
+background-color: qlineargradient(spread:reflect, x1:0.501, y1:0, x2:0.506, y2:0.489182, stop:0.0284091 rgba(255, 255, 255, 255), stop:1 rgba(255, 170, 0, 255));
+}
+QListView::item:selected:active {
+border-radius:5px; 
+border:1px solid rgb(210, 225, 230);
+background-color: qlineargradient(spread:reflect, x1:0.501, y1:0, x2:0.506, y2:0.489182, stop:0.0284091 rgba(255, 255, 255, 255), stop:1 rgba(255, 170, 0, 255));
+}
+*/</string>
            </property>
           </widget>
          </item>
@@ -228,7 +386,10 @@
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QWidget#widget_controller
+{
+	background-color: rgba(60, 65, 68,160);
+}</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <property name="spacing">
@@ -294,7 +455,60 @@
                <cursorShape>PointingHandCursor</cursorShape>
               </property>
               <property name="styleSheet">
-               <string notr="true"/>
+               <string notr="true">QSlider::groove:horizontal {
+border: 0px solid #bbb;
+}
+
+QSlider::sub-page:horizontal {
+background-color: #FFFFFF;
+border-bottom-left-radius: 2px; 
+border-top-left-radius: 2px; 
+
+border-radius: 2px; 
+margin-top:0px;
+margin-bottom:0px;
+}
+
+QSlider::add-page:horizontal {
+background-color: rgba(228, 228, 228, 50);v
+border: 0px solid #777;
+border-radius: 2px;
+margin-top:0px;
+margin-bottom:0px;
+}
+/*
+QSlider::handle:horizontal {
+background: rgb(255,153,102); 
+border: 1px solid rgb(255,153,102); 
+width: 14px;
+height:10px;
+border-radius: 7px;
+margin-top:2px;
+margin-bottom:2px;
+}
+
+QSlider::handle:horizontal:hover {
+background: rgb(255,128,6); 
+border: 1px solid rgba(102,102,102,102);
+border-radius: 7px;
+}*/
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 2px;
+}
+</string>
               </property>
               <property name="maximum">
                <number>100</number>
@@ -358,7 +572,15 @@
              <item>
               <widget class="QLabel" name="current_time">
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">QLabel{
+	border-radius:0px;
+	color: #F0F0F0;
+	background-color:rgba(0,0,0,0);
+	border-style:none;
+font-family:&quot;微软雅黑&quot;;
+font-size:16px;
+}
+</string>
                </property>
                <property name="text">
                 <string>00:00:00 / 00:00:00</string>
@@ -395,10 +617,21 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/backward_second.png);
+border-radius:0px; 
+}  
+QPushButton:hover{ 
+image: url(:new/image/backward_second.png);
+border-radius:0px; 
+} 
+QPushButton:pressed{ 
+image: url(:new/image/backward_second.png);
+border-radius:0px; 
+}</string>
              </property>
              <property name="text">
-              <string>慢退</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -414,10 +647,21 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/forward_second.png);
+border-radius:0px; 
+}  
+QPushButton:hover{ 
+image: url(:new/image/forward_second.png);
+border-radius:0px; 
+} 
+QPushButton:pressed{ 
+image: url(:new/image/forward_second.png);
+border-radius:0px; 
+}</string>
              </property>
              <property name="text">
-              <string>快进</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -462,10 +706,14 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/back.png);
+border-radius:0px; 
+}  
+</string>
              </property>
              <property name="text">
-              <string>上一曲</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -497,10 +745,21 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/start_normal.png);
+border-radius:0px; 
+}  
+QPushButton:hover{ 
+image: url(:new/image/start_focus.png);
+border-radius:0px; 
+} 
+QPushButton:pressed{ 
+image: url(:new/image/start_normal.png);
+border-radius:0px; 
+}</string>
              </property>
              <property name="text">
-              <string>播放</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -516,10 +775,22 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/pause_normal.png);
+border-radius:0px; 
+} 
+QPushButton:hover{ 
+image: url(:new/image/pause_focus.png);
+border-radius:0px; 
+} 
+QPushButton:pressed{ 
+image: url(:new/image/pause_normal.png);
+border-radius:0px; 
+}
+</string>
              </property>
              <property name="text">
-              <string>暂停</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -551,10 +822,14 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/forward.png);
+border-radius:0px; 
+}  
+</string>
              </property>
              <property name="text">
-              <string>下一曲</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -572,6 +847,42 @@
             </spacer>
            </item>
            <item>
+            <widget class="QPushButton" name="speedBtn">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">*{
+    background-color:transparent;
+    color:white;
+}
+QPushButton:hover{
+    color:  Cyan;
+}
+QPushButton:pressed{
+    color:  CadetBlue;
+}</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="volume_button">
              <property name="minimumSize">
               <size>
@@ -583,10 +894,27 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/volume_normal.png);
+border-radius:0px; 
+padding:5px;
+}  
+QPushButton:hover{ 
+image: url(:new/image/volume_normal_focus.png);
+border-radius:0px; 
+padding:3px;
+} 
+QPushButton:!checked{ 
+image: url(:new/image/volume_normal.png);
+} 
+QPushButton:checked{ 
+image: url(:new/image/volume_mute.png);
+} 
+
+</string>
              </property>
              <property name="text">
-              <string>静音</string>
+              <string/>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -614,7 +942,58 @@
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QSlider::groove:horizontal {
+border: 0px solid #bbb;
+}
+
+QSlider::sub-page:horizontal {
+background: rgb(7,163,90);
+border-radius: 0px;
+margin-top:8px;
+margin-bottom:8px;
+}
+
+QSlider::add-page:horizontal {
+background: rgb(255,255, 255);
+border: 0px solid #777;
+border-radius: 2px;
+margin-top:8px;
+margin-bottom:8px;
+}
+
+QSlider::handle:horizontal {
+background: rgb(191,191,191); 
+border: 1px solid rgb(191,191,191); 
+width: 8px;
+height:8px;
+border-radius: 2px;
+margin-top:6px;
+margin-bottom:6px;
+}
+
+QSlider::handle:horizontal:hover {
+background: rgb(255,255,255); 
+
+border-radius: 7px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}
+
+</string>
              </property>
              <property name="maximum">
               <number>100</number>
@@ -667,7 +1046,11 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/inorder.png);
+border-radius:0px; 
+} 
+</string>
              </property>
              <property name="text">
               <string/>
@@ -694,7 +1077,7 @@
             <widget class="QPushButton" name="addFile">
              <property name="minimumSize">
               <size>
-               <width>50</width>
+               <width>24</width>
                <height>24</height>
               </size>
              </property>
@@ -708,10 +1091,22 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/add.png);
+border-radius:0px; 
+} 
+QPushButton:hover{ 
+image: url(:new/image/add.png);
+border-radius:0px; 
+} 
+QPushButton:pressed{ 
+image: url(:new/image/add.png);
+border-radius:0px; 
+}
+</string>
              </property>
              <property name="text">
-              <string>添加</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -743,10 +1138,14 @@
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton{ 
+image: url(:new/image/off1.png);
+border-radius:0px; 
+}  
+</string>
              </property>
              <property name="text">
-              <string>列表</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -785,7 +1184,13 @@
   <customwidget>
    <class>VideoWidget</class>
    <extends>QWidget</extends>
-   <header location="global">Widget/videowidget.h</header>
+   <header>Widget/videowidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VideoFrameDisplay</class>
+   <extends>QWidget</extends>
+   <header>Widget/videoframedisplay.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

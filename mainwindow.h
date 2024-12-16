@@ -18,11 +18,27 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
+enum ResizeRegion
+{
+    Default,
+    North,
+    NorthEast,
+    East,
+    SouthEast,
+    South,
+    SouthWest,
+    West,
+    NorthWest
+};
+#define PLAYBACK_RATE_MIN           0.25     // 最慢
+#define PLAYBACK_RATE_MAX           3.0     // 最快
+#define PLAYBACK_RATE_SCALE         0.25    // 变速刻度
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+signals:
+    void sig_reversePlay(QString);
+    void sig_reverseProgress(qint64);
 
 
 /*初始化相关*/
@@ -58,7 +74,7 @@ public:
 
 /*播放功能组件相关*/
 public:
-    SeekFrame* currVideoSeekFrame;
+    SeekFrame* currVideoSeekFrame; // 缩略图
 
     QMediaPlayer * mediaPlayer; // 播放器
     QMediaPlaylist *playList; // 播放列表
@@ -77,7 +93,19 @@ public:
     bool isRepeat=false;
     QMediaPlayer::State m_playerState = QMediaPlayer::StoppedState;
 
+    float       pf_playback_rate;           // 播放速率
+    int         pf_playback_rate_changed;   // 播放速率改变
 
+/*无边框相关*/
+public:
+    void handleResize();
+    void handleMove(QPoint pt);
+    ResizeRegion getResizeRegion(QPoint clientPos);
+    void setResizeCursor(ResizeRegion region);
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent * event)override;
+    void mousePressEvent(QMouseEvent *event)override;
+/*槽函数*/
 public slots:
 
     /*其它*/
@@ -122,6 +150,8 @@ public slots:
 
     void onDurationChanged(qint64 duration);
 
+    void  on_speedBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -142,18 +172,18 @@ public:
     QVector<QString> *playListLocal;
     void changePlayingRatio(float);
 
-/*右键菜单栏(进行调整倍速)*/
-public:
-    QAction *rtText;
-    QAction *rt0_5;
-    QAction *rt0_75;
-    QAction *rt1_0;
-    QAction *rt1_25;
-    QAction *rt1_5;
-    QAction *rt2_0;
-    QAction *rt3_0;
-protected:
-    void contextMenuEvent(QContextMenuEvent *event) override;
+private:
+    /**********无边框需要用到的属性********/
+    bool m_drag, m_move;
+    QPoint dragPos, resizeDownPos;
+    const int resizeBorderWidth = 10;
+    ResizeRegion resizeRegion;
+    QRect mouseDownRect;
+    /***********************************/
+
+
+
+
 
 };
 #endif // MAINWINDOW_H
