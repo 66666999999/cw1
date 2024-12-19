@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[28];
-    char stringdata0[378];
+    QByteArrayData data[35];
+    char stringdata0[457];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -59,7 +59,14 @@ QT_MOC_LITERAL(23, 306, 12), // "addVideoItem"
 QT_MOC_LITERAL(24, 319, 11), // "changeVideo"
 QT_MOC_LITERAL(25, 331, 17), // "onDurationChanged"
 QT_MOC_LITERAL(26, 349, 8), // "duration"
-QT_MOC_LITERAL(27, 358, 19) // "on_speedBtn_clicked"
+QT_MOC_LITERAL(27, 358, 19), // "on_speedBtn_clicked"
+QT_MOC_LITERAL(28, 378, 21), // "on_comboBox_activated"
+QT_MOC_LITERAL(29, 400, 4), // "arg1"
+QT_MOC_LITERAL(30, 405, 11), // "changeEvent"
+QT_MOC_LITERAL(31, 417, 7), // "QEvent*"
+QT_MOC_LITERAL(32, 425, 1), // "e"
+QT_MOC_LITERAL(33, 427, 23), // "on_comboBox_2_activated"
+QT_MOC_LITERAL(34, 451, 5) // "index"
 
     },
     "MainWindow\0sig_reversePlay\0\0"
@@ -72,7 +79,10 @@ QT_MOC_LITERAL(27, 358, 19) // "on_speedBtn_clicked"
     "jump\0positionChange\0progress\0"
     "reverseShowRatio\0openFileButtonClicked\0"
     "addVideoItem\0changeVideo\0onDurationChanged\0"
-    "duration\0on_speedBtn_clicked"
+    "duration\0on_speedBtn_clicked\0"
+    "on_comboBox_activated\0arg1\0changeEvent\0"
+    "QEvent*\0e\0on_comboBox_2_activated\0"
+    "index"
 };
 #undef QT_MOC_LITERAL
 
@@ -82,7 +92,7 @@ static const uint qt_meta_data_MainWindow[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-      24,   14, // methods
+      27,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -90,32 +100,35 @@ static const uint qt_meta_data_MainWindow[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  134,    2, 0x06 /* Public */,
-       3,    1,  137,    2, 0x06 /* Public */,
+       1,    1,  149,    2, 0x06 /* Public */,
+       3,    1,  152,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       4,    0,  140,    2, 0x0a /* Public */,
-       5,    0,  141,    2, 0x0a /* Public */,
-       6,    0,  142,    2, 0x0a /* Public */,
-       7,    0,  143,    2, 0x0a /* Public */,
-       8,    0,  144,    2, 0x0a /* Public */,
-       9,    1,  145,    2, 0x0a /* Public */,
-      10,    0,  148,    2, 0x0a /* Public */,
-      11,    1,  149,    2, 0x0a /* Public */,
-      12,    1,  152,    2, 0x0a /* Public */,
-      13,    0,  155,    2, 0x0a /* Public */,
-      14,    0,  156,    2, 0x0a /* Public */,
-      15,    0,  157,    2, 0x0a /* Public */,
-      16,    0,  158,    2, 0x0a /* Public */,
-      17,    1,  159,    2, 0x0a /* Public */,
-      18,    1,  162,    2, 0x0a /* Public */,
-      19,    1,  165,    2, 0x0a /* Public */,
-      21,    1,  168,    2, 0x0a /* Public */,
-      22,    0,  171,    2, 0x0a /* Public */,
-      23,    1,  172,    2, 0x0a /* Public */,
-      24,    1,  175,    2, 0x0a /* Public */,
-      25,    1,  178,    2, 0x0a /* Public */,
-      27,    0,  181,    2, 0x0a /* Public */,
+       4,    0,  155,    2, 0x0a /* Public */,
+       5,    0,  156,    2, 0x0a /* Public */,
+       6,    0,  157,    2, 0x0a /* Public */,
+       7,    0,  158,    2, 0x0a /* Public */,
+       8,    0,  159,    2, 0x0a /* Public */,
+       9,    1,  160,    2, 0x0a /* Public */,
+      10,    0,  163,    2, 0x0a /* Public */,
+      11,    1,  164,    2, 0x0a /* Public */,
+      12,    1,  167,    2, 0x0a /* Public */,
+      13,    0,  170,    2, 0x0a /* Public */,
+      14,    0,  171,    2, 0x0a /* Public */,
+      15,    0,  172,    2, 0x0a /* Public */,
+      16,    0,  173,    2, 0x0a /* Public */,
+      17,    1,  174,    2, 0x0a /* Public */,
+      18,    1,  177,    2, 0x0a /* Public */,
+      19,    1,  180,    2, 0x0a /* Public */,
+      21,    1,  183,    2, 0x0a /* Public */,
+      22,    0,  186,    2, 0x0a /* Public */,
+      23,    1,  187,    2, 0x0a /* Public */,
+      24,    1,  190,    2, 0x0a /* Public */,
+      25,    1,  193,    2, 0x0a /* Public */,
+      27,    0,  196,    2, 0x0a /* Public */,
+      28,    1,  197,    2, 0x08 /* Private */,
+      30,    1,  200,    2, 0x08 /* Private */,
+      33,    1,  203,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    2,
@@ -144,6 +157,9 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::Bool,    2,
     QMetaType::Void, QMetaType::LongLong,   26,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,   29,
+    QMetaType::Void, 0x80000000 | 31,   32,
+    QMetaType::Void, QMetaType::Int,   34,
 
        0        // eod
 };
@@ -178,6 +194,9 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 21: _t->changeVideo((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 22: _t->onDurationChanged((*reinterpret_cast< qint64(*)>(_a[1]))); break;
         case 23: _t->on_speedBtn_clicked(); break;
+        case 24: _t->on_comboBox_activated((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 25: _t->changeEvent((*reinterpret_cast< QEvent*(*)>(_a[1]))); break;
+        case 26: _t->on_comboBox_2_activated((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -228,13 +247,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 24)
+        if (_id < 27)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 24;
+        _id -= 27;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 24)
+        if (_id < 27)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 24;
+        _id -= 27;
     }
     return _id;
 }

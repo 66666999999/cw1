@@ -1,9 +1,11 @@
 #ifndef SEEKFRAME_H
 #define SEEKFRAME_H
 
-#include<iostream>
-#include<QImage>
-#include"utils.h"
+#include <iostream>
+#include <QImage>
+#include "utils.h"
+
+// Include FFmpeg libraries for media handling
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
@@ -12,49 +14,77 @@ extern "C" {
 #include <libavutil/imgutils.h>
 }
 
+/**
+ * @brief The SeekFrame class is responsible for locating and extracting specific frames 
+ *        from a video stream based on a target timestamp.
+ * 
+ * This class utilizes FFmpeg APIs to perform frame seeking. It finds the nearest 
+ * keyframe before the target time and iterates through subsequent frames until the 
+ * frame closest to the desired timestamp (within a defined margin) is located.
+ * 
+ * The accuracy of the extracted frame can be controlled using `minDistance`. 
+ * A smaller `minDistance` increases accuracy but may reduce performance.
+ */
 class SeekFrame {
-    /*
-    做法:
-        - 首先通过av_seek_frame API来找到离目标时间最近的前面的关键帧, 然后从
-          该关键帧开始往后找, 直至遍历到的帧的时间和目标时间相差小于 minDistance.
-          也就是说, 找到的帧和目标帧会有小于minDistance秒的误差.
-          小视频找帧,耗时<0.5s. 但是视频越大延迟会越高.
-        - 当minDistance取一个特别大的数字的时候, 此时就退化成了:找到离目标最近的关键帧,
-          大视频关键帧很多,可考虑设minDistance为一个很大的数, 此时会非常流畅
-
-    */
 public:
-    int maxFindTimes;
-    double minDistance; // 超参数, 值越大, 找screencap的速度越快.
-    double avd; // 视频流的timebase 对应的转换成了double类型的值
-    int videoStreamIndex;
-    int video_width = 0;
-    int video_height = 0;
-    AVFormatContext* formatContext = NULL; // 媒体上下文
-    AVCodecContext* codecContext = NULL; // 视频流的codev
-    struct SwsContext* sws_ctx = NULL; // RGB格式转换器
+    int maxFindTimes;      // Maximum number of frames to search for a target frame
+    double minDistance;    // Margin of error (in seconds) between the desired and actual frame time
+    double avd;            // Time base of the video stream converted to double
+    int videoStreamIndex;  // Index of the video stream in the media file
+    int video_width = 0;   // Width of the video frame
+    int video_height = 0;  // Height of the video frame
 
-    // 构造函数, 用文件名filename, 最大寻找次数maxFindTimes, 以及目标帧和真实帧所在时间的距离
+    AVFormatContext* formatContext = NULL;  // FFmpeg format context for handling media file
+    AVCodecContext* codecContext = NULL;    // FFmpeg codec context for decoding video stream
+    struct SwsContext* sws_ctx = NULL;      // Swscale context for converting pixel formats
+
+    /**
+     * @brief Constructor for SeekFrame
+     * @param filename      Path to the video file
+     * @param maxFindTimes  Maximum number of frames to search
+     * @param minDistance   Allowed margin of error for locating the desired frame
+     */
     SeekFrame(QString filename, int maxFindTimes, double minDistance);
-    SeekFrame(){};
-    // 初始化formatContext,codecContext,sws_ctx,等等
-    void init(const char* filename);
-    // 根据需要的时间: wanted_time 来获取该时间的帧
 
-    static void save_rgb_frame(unsigned char* buf, int wrap, int xsize, int ysize, const char* filename)
-    /*把AVFrame对象写入磁盘(debug 使用, 不会用到) */
-    {
+    /**
+     * @brief Default constructor
+     */
+    SeekFrame() {}
+
+    /**
+     * @brief Initialize FFmpeg contexts, codec, and pixel format converter.
+     * @param filename Path to the video file
+     */
+    void init(const char* filename);
+
+    /**
+     * @brief Save an RGB frame to the disk (used for debugging purposes).
+     * 
+     * This static function writes the contents of an RGB buffer to a file in PPM format.
+     * 
+     * @param buf       Pointer to the RGB buffer
+     * @param wrap      Line size (stride) of the buffer
+     * @param xsize     Width of the frame
+     * @param ysize     Height of the frame
+     * @param filename  Path to save the output file
+     */
+    static void save_rgb_frame(unsigned char* buf, int wrap, int xsize, int ysize, const char* filename) {
         FILE* f;
         int i;
+
+        // Open the output file
         f = fopen(filename, "wb");
+
+        // Write PPM file header
         fprintf(f, "P6\n%d %d\n255\n", xsize, ysize);
 
-        for (i = 0; i < ysize; i++)
-        {
+        // Write pixel data: 3 bytes per pixel (RGB)
+        for (i = 0; i < ysize; i++) {
             unsigned char* ch = (buf + i * wrap);
-            fwrite(ch, 1, xsize * 3, f);  //Write 3 bytes per pixel.
+            fwrite(ch, 1, xsize * 3, f);
         }
 
+        // Close the output file
         fclose(f);
     }
 };

@@ -127,6 +127,36 @@ font-size:16px;
           </spacer>
          </item>
          <item>
+          <widget class="QComboBox" name="comboBox">
+           <item>
+            <property name="text">
+             <string>中文</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>English</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QPushButton" name="minimize">
            <property name="minimumSize">
             <size>
@@ -847,16 +877,16 @@ border-radius:0px;
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="speedBtn">
+            <widget class="QComboBox" name="comboBox_2">
              <property name="minimumSize">
               <size>
-               <width>100</width>
+               <width>110</width>
                <height>30</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>100</width>
+               <width>110</width>
                <height>30</height>
               </size>
              </property>
@@ -864,21 +894,6 @@ border-radius:0px;
               <font>
                <pointsize>12</pointsize>
               </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">*{
-    background-color:transparent;
-    color:white;
-}
-QPushButton:hover{
-    color:  Cyan;
-}
-QPushButton:pressed{
-    color:  CadetBlue;
-}</string>
-             </property>
-             <property name="text">
-              <string/>
              </property>
             </widget>
            </item>

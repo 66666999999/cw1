@@ -1,0 +1,13 @@
+debug/VideoFrameDisplay.o
+debug/VideoSlider.o
+debug/videowidget.o
+debug/main.o
+debug/mainwindow.o
+debug/seekFrame.o
+debug/utils.o
+debug/qrc_ImageResource.o
+debug/qrc_language.o
+debug/moc_VideoFrameDisplay.o
+debug/moc_VideoSlider.o
+debug/moc_videowidget.o
+debug/moc_mainwindow.o

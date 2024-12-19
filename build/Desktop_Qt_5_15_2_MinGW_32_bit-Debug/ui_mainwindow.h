@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -39,6 +40,8 @@ public:
     QPushButton *pushButton;
     QLabel *label;
     QSpacerItem *horizontalSpacer_3;
+    QComboBox *comboBox;
+    QSpacerItem *horizontalSpacer_9;
     QPushButton *minimize;
     QSpacerItem *horizontalSpacer_7;
     QPushButton *maximize;
@@ -76,7 +79,7 @@ public:
     QSpacerItem *horizontalSpacer_25;
     QPushButton *next_video;
     QSpacerItem *horizontalSpacer;
-    QPushButton *speedBtn;
+    QComboBox *comboBox_2;
     QPushButton *volume_button;
     QSlider *volume_slider;
     QSpacerItem *horizontalSpacer_31;
@@ -146,6 +149,17 @@ public:
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer_3);
+
+        comboBox = new QComboBox(widget_2);
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->setObjectName(QString::fromUtf8("comboBox"));
+
+        horizontalLayout->addWidget(comboBox);
+
+        horizontalSpacer_9 = new QSpacerItem(20, 20, QSizePolicy::Policy::Minimum, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer_9);
 
         minimize = new QPushButton(widget_2);
         minimize->setObjectName(QString::fromUtf8("minimize"));
@@ -536,25 +550,15 @@ public:
 
         buttons_slide->addItem(horizontalSpacer);
 
-        speedBtn = new QPushButton(widget_controller);
-        speedBtn->setObjectName(QString::fromUtf8("speedBtn"));
-        speedBtn->setMinimumSize(QSize(100, 30));
-        speedBtn->setMaximumSize(QSize(100, 30));
+        comboBox_2 = new QComboBox(widget_controller);
+        comboBox_2->setObjectName(QString::fromUtf8("comboBox_2"));
+        comboBox_2->setMinimumSize(QSize(110, 30));
+        comboBox_2->setMaximumSize(QSize(110, 30));
         QFont font;
         font.setPointSize(12);
-        speedBtn->setFont(font);
-        speedBtn->setStyleSheet(QString::fromUtf8("*{\n"
-"    background-color:transparent;\n"
-"    color:white;\n"
-"}\n"
-"QPushButton:hover{\n"
-"    color:  Cyan;\n"
-"}\n"
-"QPushButton:pressed{\n"
-"    color:  CadetBlue;\n"
-"}"));
+        comboBox_2->setFont(font);
 
-        buttons_slide->addWidget(speedBtn);
+        buttons_slide->addWidget(comboBox_2);
 
         volume_button = new QPushButton(widget_controller);
         volume_button->setObjectName(QString::fromUtf8("volume_button"));
@@ -735,6 +739,9 @@ public:
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         pushButton->setText(QString());
         label->setText(QCoreApplication::translate("MainWindow", "\350\247\206\351\242\221\346\222\255\346\224\276\345\231\250", nullptr));
+        comboBox->setItemText(0, QCoreApplication::translate("MainWindow", "\344\270\255\346\226\207", nullptr));
+        comboBox->setItemText(1, QCoreApplication::translate("MainWindow", "English", nullptr));
+
         minimize->setText(QString());
 #if QT_CONFIG(statustip)
         maximize->setStatusTip(QString());
@@ -748,7 +755,6 @@ public:
         play_button->setText(QString());
         pause_botton->setText(QString());
         next_video->setText(QString());
-        speedBtn->setText(QString());
         volume_button->setText(QString());
         repeat->setText(QString());
         addFile->setText(QString());

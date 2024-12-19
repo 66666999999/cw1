@@ -1,93 +1,100 @@
 #include "seekFrame.h"
-SeekFrame::SeekFrame(QString fileName, int maxFindTimes, double minDistance)
-{
+
+// Constructor for SeekFrame class
+SeekFrame::SeekFrame(QString fileName, int maxFindTimes, double minDistance) {
+    // Convert QString fileName to a standard C++ string, then to a C-style string
     std::string fileName_str = fileName.toStdString();
     const char* fileName_const = fileName_str.c_str();
+
+    // Initialize the SeekFrame object with the video file path
     init(fileName_const);
+
+    // Set parameters for maximum search attempts and minimum frame distance
     this->maxFindTimes = maxFindTimes;
     this->minDistance = minDistance;
 }
 
 /**
- * @brief 初始化SeekFrame类
- * @param fileName    视频文件路径
+ * @brief Initialize the SeekFrame class
+ * @param fileName   Path to the video file
  */
 void SeekFrame::init(const char* fileName) {
-    formatContext = avformat_alloc_context();
-    AVCodec* codec = NULL;  // 视频流的decoder
-    AVCodecParameters* codecParameters = NULL;
-    videoStreamIndex = -1; // 视频流index
+    formatContext = avformat_alloc_context();  // Allocate AVFormatContext for the video
+    AVCodec* codec = NULL;  // Decoder for the video stream
+    AVCodecParameters* codecParameters = NULL;  // Codec parameters
+    videoStreamIndex = -1;  // Index for the video stream
 
-    // 读入文件header
+    // Read the video file header and populate formatContext
     avformat_open_input(&formatContext, fileName, NULL, NULL);
-    //获取视频流信息
+
+    // Retrieve stream information from the input file
     avformat_find_stream_info(formatContext, NULL);
+
     std::cout << "Format: " << formatContext->iformat->name
-        << "duration" << formatContext->duration
-        << "bitrate" << formatContext->bit_rate;
-    // 寻找视频流index, 以及视频流的decoder
-    for (int i = 0; i < (int)formatContext->nb_streams; i++)
-    {
+              << " duration: " << formatContext->duration
+              << " bitrate: " << formatContext->bit_rate;
+
+    // Iterate through all the streams to find the video stream
+    for (int i = 0; i < (int)formatContext->nb_streams; i++) {
         AVCodecParameters* localCodecParameters = NULL;
-        localCodecParameters = formatContext->streams[i]->codecpar;
+        localCodecParameters = formatContext->streams[i]->codecpar;  // Get stream codec parameters
 
         AVCodec* localCodec = NULL;
-        localCodec = avcodec_find_decoder(localCodecParameters->codec_id);
-        if (localCodec == NULL)
-        {
-            printf("Error: Unsupported codec");
+        localCodec = avcodec_find_decoder(localCodecParameters->codec_id);  // Find the decoder for the stream
+        if (localCodec == NULL) {
+            printf("Error: Unsupported codec\n");  // Unsupported codec
             continue;
         }
-        if (localCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO)
-        {
-            if (videoStreamIndex == -1)
-            {
-                videoStreamIndex = i; // 找到了视频流的index
-                codec = localCodec; // 找到了视频流的decoder
-                codecParameters = localCodecParameters;
-                // 记录视频的高和宽
+
+        if (localCodecParameters->codec_type == AVMEDIA_TYPE_VIDEO) {  // Check if the stream is a video stream
+            if (videoStreamIndex == -1) {  // Set video stream index and decoder parameters
+                videoStreamIndex = i;  // Store the video stream index
+                codec = localCodec;  // Store the decoder for the video stream
+                codecParameters = localCodecParameters;  // Store codec parameters
+
+                // Record video width and height
                 video_width = localCodecParameters->width;
                 video_height = localCodecParameters->height;
             }
         }
     }
-    //利用已有decoder的信息;来分配一个AVCodecContext
+
+    // Allocate AVCodecContext using the video stream's decoder
     codecContext = avcodec_alloc_context3(codec);
-    if (!codecContext) { std::cout << "Failed to allocate memory for AVCodecContext"; return ;}
-    int type = mediaType(fileName);
-    if(type==1){ //如果是音频, 下面的不用做了
+    if (!codecContext) {
+        std::cout << "Failed to allocate memory for AVCodecContext\n";
         return;
     }
-    if (avcodec_parameters_to_context(codecContext, codecParameters) < 0)
-    {
-        std::cout << "Failed to copy codec paramters to codec context";
-        return ;
-    }
-    // 初始化刚刚分配完空间的AVCodecContext, 仍然是用pCodec来初始化
-    if (avcodec_open2(codecContext, codec, NULL) < 0)
-    {
-        std::cout<< "failed to open codec throught avcodec_open2";
+
+    // Check if the file is an audio file
+    int type = mediaType(fileName);
+    if (type == 1) {  // If the file is audio, exit initialization
+        return;
     }
 
+    // Copy codec parameters to the codec context
+    if (avcodec_parameters_to_context(codecContext, codecParameters) < 0) {
+        std::cout << "Failed to copy codec parameters to codec context\n";
+        return;
+    }
 
-    // 图片格式转换器(转换成RGB)
-    sws_ctx = sws_getContext
-    (
-        codecContext->width,
-        codecContext->height,
-        codecContext->pix_fmt,
-        codecContext->width,
-        codecContext->height,
-        AV_PIX_FMT_RGB24,
-        SWS_BILINEAR,
-        NULL,
-        NULL,
-        NULL
+    // Open the codec using avcodec_open2
+    if (avcodec_open2(codecContext, codec, NULL) < 0) {
+        std::cout << "Failed to open codec through avcodec_open2\n";
+    }
+
+    // Initialize the software scaling context to convert pixel format to RGB24
+    sws_ctx = sws_getContext(
+        codecContext->width,      // Source video width
+        codecContext->height,     // Source video height
+        codecContext->pix_fmt,    // Source pixel format
+        codecContext->width,      // Destination width
+        codecContext->height,     // Destination height
+        AV_PIX_FMT_RGB24,         // Destination pixel format
+        SWS_BILINEAR,             // Scaling algorithm (bilinear)
+        NULL, NULL, NULL          // No additional parameters
     );
-    // 初始化avd
+
+    // Initialize the average duration (time base) of the video stream
     avd = av_q2d(formatContext->streams[videoStreamIndex]->time_base);
-
-
-
 }
-

@@ -14,176 +14,186 @@
 #include <QAction>
 #include <QCursor>
 #include <QProcess>
+#include <QTranslator>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-enum ResizeRegion
-{
-    Default,
-    North,
-    NorthEast,
-    East,
-    SouthEast,
-    South,
-    SouthWest,
-    West,
-    NorthWest
+
+/**
+ * @brief Enumeration for different window resize regions.
+ */
+enum ResizeRegion {
+    Default,      // No resize
+    North,        // Top border
+    NorthEast,    // Top-right corner
+    East,         // Right border
+    SouthEast,    // Bottom-right corner
+    South,        // Bottom border
+    SouthWest,    // Bottom-left corner
+    West,         // Left border
+    NorthWest     // Top-left corner
 };
-#define PLAYBACK_RATE_MIN           0.25     // 最慢
-#define PLAYBACK_RATE_MAX           3.0     // 最快
-#define PLAYBACK_RATE_SCALE         0.25    // 变速刻度
-class MainWindow : public QMainWindow
-{
+
+// Playback rate configuration
+#define PLAYBACK_RATE_MIN           0.25     // Minimum playback speed
+#define PLAYBACK_RATE_MAX           3.0      // Maximum playback speed
+#define PLAYBACK_RATE_SCALE         0.25     // Playback speed step
+
+/**
+ * @brief The MainWindow class provides a multimedia player with various functionalities.
+ * 
+ * It includes video playback, controls, playlist management, playback rate adjustments,
+ * and support for custom window resizing.
+ */
+class MainWindow : public QMainWindow {
     Q_OBJECT
+
 signals:
-    void sig_reversePlay(QString);
-    void sig_reverseProgress(qint64);
+    void sig_reversePlay(QString);       // Signal for reverse playback
+    void sig_reverseProgress(qint64);    // Signal for reverse playback progress
 
-
-/*初始化相关*/
+/* Initialization Methods */
 public:
-    // 初始化视频
+    /**
+     * @brief Initialize the video playback with a given file.
+     * @param fileName Path to the video file.
+     */
     void initializeVideo(QString);
-    // 正放视频
+
+    /**
+     * @brief Play the video in normal (forward) mode.
+     */
     void normalPlay();
-    // 用于初始化一些类 (缩略图, 波形图..)
+
+    /**
+     * @brief Initialize system components like thumbnails, waveforms, etc.
+     */
     void initSystem();
-    // 使用QT初始化视频
+
+    /**
+     * @brief Initialize video information like duration, resolution, etc.
+     * @param fileName Path to the video file.
+     */
     void initVideoInfo(QString);
 
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-/*视频信息相关成员*/
+/* Video Information Members */
 public:
-    // 视频长度
-    int durationS; //(秒)
-    qint64 duration; //(微秒)
-    qint64 durationMs; //(毫秒)
-    // 倒放组件读出来的视频的秒数
-    qint64 reverseDurationSecond;
-    // 当前正在播放的视频的地址
-    QString currentVideoPath;
-    volatile qint64 lastSecond = 1e10;
-    qint64 currentPosition=0; // 记录当前的播放位置
+    int durationS;             // Video duration in seconds
+    qint64 duration;           // Video duration in microseconds
+    qint64 durationMs;         // Video duration in milliseconds
+    qint64 reverseDurationSecond; // Reverse playback duration in seconds
+    QString currentVideoPath;  // Path to the currently playing video
+    volatile qint64 lastSecond = 1e10;  // Timestamp for the last frame
+    qint64 currentPosition = 0; // Current playback position in milliseconds
 
+    int volume() const;        // Get current volume level
 
-
-    int volume() const;
-
-/*播放功能组件相关*/
+/* Playback Functionality Members */
 public:
-    SeekFrame* currVideoSeekFrame; // 缩略图
+    SeekFrame* currVideoSeekFrame;  // SeekFrame for thumbnails or reverse play
+    QMediaPlayer *mediaPlayer;      // QMediaPlayer for video playback
+    QMediaPlaylist *playList;       // Playlist for video management
 
-    QMediaPlayer * mediaPlayer; // 播放器
-    QMediaPlaylist *playList; // 播放列表
-
-
-/*标志位*/
+/* State Flags */
 public:
-    // 标志是否静音
-    bool m_playerMuted = true;
-    // 标志是否已经加载了视频
-    bool loadedVideo;
+    bool m_playerMuted = true;        // Mute flag
+    bool loadedVideo;                 // Flag indicating if video is loaded
+    int currMediaType;                // Type of current media (audio/video)
+    bool isRepeat = false;            // Flag for repeat mode
+    QMediaPlayer::State m_playerState = QMediaPlayer::StoppedState; // Current playback state
 
-    // 当前视频的类型
-    int currMediaType;
-    // 当前的播放状态
-    bool isRepeat=false;
-    QMediaPlayer::State m_playerState = QMediaPlayer::StoppedState;
+    float pf_playback_rate;           // Current playback rate
+    int pf_playback_rate_changed;     // Flag indicating playback rate change
 
-    float       pf_playback_rate;           // 播放速率
-    int         pf_playback_rate_changed;   // 播放速率改变
-
-/*无边框相关*/
+/* Frameless Window Members */
 public:
-    void handleResize();
-    void handleMove(QPoint pt);
-    ResizeRegion getResizeRegion(QPoint clientPos);
-    void setResizeCursor(ResizeRegion region);
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent * event)override;
-    void mousePressEvent(QMouseEvent *event)override;
-/*槽函数*/
+    void handleResize();              // Handle window resizing
+    void handleMove(QPoint pt);       // Handle window movement
+    ResizeRegion getResizeRegion(QPoint clientPos); // Get the resize region
+    void setResizeCursor(ResizeRegion region);      // Set cursor style based on region
+    void mouseReleaseEvent(QMouseEvent *event) override; // Handle mouse release
+    void mouseMoveEvent(QMouseEvent *event) override;    // Handle mouse move
+    void mousePressEvent(QMouseEvent *event) override;   // Handle mouse press
+
+/* Slots */
 public slots:
+    /* Miscellaneous */
+    void connect2Player();          // Connect all necessary signals and slots
+    void highlightInFileList();     // Highlight a video in the playlist
+    void showNormalWidget();        // Show forward playback UI
+    void showReverseWidget();       // Show reverse playback UI
+    void changePlayOrder();         // Toggle between repeat and sequential play
 
-    /*其它*/
-    void connect2Player();  // 用于进行所有的链接
-    void highlightInFileList(); // 高亮播放列表中的某个视频
-    void showNormalWidget();
-    void showReverseWidget();
-    void changePlayOrder(); // 播放顺序
+    /* Seek Functionality */
+    void initSeekFrame(QString); // Initialize SeekFrame for seeking
+    void deleteSeekFrame();               // Delete the current SeekFrame object
 
+    /* Seek in Forward Playback */
+    void seek(qint64);    // Seek to a specific position in the video
 
+    /* Volume Controls */
+    void changeVolume(int); // Change playback volume
+    void changeMute();             // Mute or unmute the video
 
-    /*快进相关*/
-    void initSeekFrame(QString); //初始化seekFrame类
-    void deleteSeekFrame(); // 释放当前SeekFrame对象的空间
+    /* Playback Controls */
+    void pause();                  // Pause video playback
+    void play();                   // Resume video playback
+    void playClicked();            // Handle play button click
 
+    /* Skip Controls */
+    void skipForwardOrBackward(bool); // Skip video forward or backward
+    void jump(int);       // Jump to a specific time in the video
 
-    /*正放跳转相关*/
-    void seek(qint64);   // 正放的时候, seek到某个位置
+    /* Time Display */
+    void positionChange(qint64 progress); // Update playback progress
+    void reverseShowRatio(qint64);  // Update reverse progress bar
 
-    /*音量相关*/
-    void changeVolume(int);  //改变音量
-    void changeMute();  // 静音
+    /* Playlist Management */
+    void openFileButtonClicked(); // Open a new file
+    void addVideoItem(QString); // Add video to the playlist
+    void changeVideo(bool);  // Change to next or previous video
+    void onDurationChanged(qint64 duration); // Handle duration change
 
-    /*暂停和继续播放*/
-    void pause(); // 暂停
-    void play();  // 继续播放
-    void playClicked();  // 播放按钮的点击事件
-
-
-    /*视频向前或向后跳10s 相关*/
-    void skipForwardOrBackward(bool); // 判断是往前skip还是往后skip
-    void jump(int); // 进行视频的前后10s的跳转
-
-    /*时间显示相关*/
-    void positionChange(qint64 progress);
-    void reverseShowRatio(qint64); //设置进度条比例
-
-    /*播放列表相关*/
-    void openFileButtonClicked(); // 处理打开一个新文件的按钮
-    void addVideoItem(QString); // 添加某个url到播放列表
-    void changeVideo(bool); // 上一首,下一首
-
-    void onDurationChanged(qint64 duration);
-
-    void  on_speedBtn_clicked();
+    /* Playback Speed */
+    void on_speedBtn_clicked();   // Handle speed button click
 
 private:
     Ui::MainWindow *ui;
+    QPropertyAnimation *mAnimation_ControlWidget; // Animation for bottom control widget
 
-    QPropertyAnimation *mAnimation_ControlWidget;
-    //显示底部控制控件(现在没有用,后期可能有用,先不要管)
-    void showOutControlWidget();
-    void hideControlWidget();
-    void updateDurationInfo(qint64 currentInfo);
+    void showOutControlWidget(); // Show control widget
+    void hideControlWidget();    // Hide control widget
+    void updateDurationInfo(qint64 currentInfo); // Update duration display
 
-/*Qt Widget相关*/
+/* Qt Widget Components */
 public:
-    // 初始化组件
-    void initWdigets();
+    void initWdigets(); // Initialize UI components like buttons, sliders, etc.
 
-/*其它内容*/
+/* Other Components */
 public:
-    QVector<QString> *playHistory;
-    QVector<QString> *playListLocal;
-    void changePlayingRatio(float);
+    QVector<QString> *playHistory;     // Vector to store playback history
+    QVector<QString> *playListLocal;   // Local playlist vector
+    void changePlayingRatio(float ratio); // Change playback ratio
 
 private:
-    /**********无边框需要用到的属性********/
-    bool m_drag, m_move;
-    QPoint dragPos, resizeDownPos;
-    const int resizeBorderWidth = 10;
-    ResizeRegion resizeRegion;
-    QRect mouseDownRect;
-    /***********************************/
+    /* Frameless Window Properties */
+    bool m_drag, m_move;                // Flags for dragging and moving
+    QPoint dragPos, resizeDownPos;      // Positions for window dragging
+    const int resizeBorderWidth = 10;   // Width of resize border
+    ResizeRegion resizeRegion;          // Current resize region
+    QRect mouseDownRect;                // Rectangle for mouse down position
 
+private slots:
+    void on_comboBox_activated(const QString &arg1); // ComboBox activation handler
+    void changeEvent(QEvent *e);                    // Handle change events
+    void on_comboBox_2_activated(int index);        // ComboBox2 activation handler
 
-
-
-
+private:
+    QTranslator tran; // Translator for multi-language support
 };
+
 #endif // MAINWINDOW_H
