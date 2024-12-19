@@ -60,6 +60,9 @@ This project is a video player application developed using the Qt framework. It 
 
 ---
 
+#### **Final showcase(Fourth and Fifth iteration)**
+![Final showcase iteration](https://github.com/Leo-Chen-cs/UI-finalcw/blob/main/image/Final%20showcase(Fourth%20and%20Fifth%20iteration).png)
+
 ### **Project Structure**
 ```
 /Project-Directory
