@@ -60,30 +60,32 @@ This project is a video player application developed using the Qt framework. It 
 
 ---
 
+#### **Final showcase(Fourth and Fifth iteration)**
+![Final showcase iteration](https://github.com/Leo-Chen-cs/UI-finalcw/blob/main/image/Final%20showcase(Fourth%20and%20Fifth%20iteration).png)
+
 ### **Project Structure**
 ```
 /Project-Directory
-│
 ├── image/                      # Directory for resource images (icons, thumbnails, etc.)
 ├── lib/                        # Directory for libraries or third-party dependencies
 ├── Widget/                     # Contains custom UI components/widgets
-│
-├── 111.mp4                     # Sample video file used for testing playback
-├── ImageResource.qrc           # Qt Resource file managing images and resources
-│
+├── chinese.qm                  # Compiled language translation file for Chinese
+├── chinese.ts                  # Translation source file for Chinese
+├── english.qm                  # Compiled language translation file for English
+├── english.ts                  # Translation source file for English
+├── ImageResource.qrc           # Qt resource file managing images and resources
+├── language.qrc                # Qt resource file for language translation files
 ├── main.cpp                    # Program's main entry point, initializes the application
 ├── mainwindow.cpp              # Implementation of the main window logic (UI functionality)
 ├── mainwindow.h                # Header file for the main window class
 ├── mainwindow.ui               # UI design file created using Qt Designer
-│
 ├── Player_3.pro.user           # User-specific project configuration file (auto-generated)
 ├── Player_4.pro                # Project configuration file for Qt Creator
-├── Player_4.pro.user           # User-specific configuration file (do not version-control)
-├── Player_4.pro.user.3f21d0b   # Backup user configuration file
-│
+├── Player_5.pro.user           # User-specific configuration file (do not version-control)
+├── Player_5.pro.user.3f21d0b   # Backup user configuration file
+├── README.md                   # Project README file, containing an overview of the project
 ├── seekFrame.cpp               # Implementation of frame seek functionality for video playback
 ├── seekFrame.h                 # Header file for frame seek functionality
-│
 ├── utils.cpp                   # Contains utility/helper function implementations
 └── utils.h                     # Header file for utility functions
 
